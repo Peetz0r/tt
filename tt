@@ -1,10 +1,10 @@
-#!/bin/fish
+#!/bin/sh
 
-set j (curl -f --no-progress-meter https://teletekst-data.nos.nl/json/$argv)
+j=$(curl -f --no-progress-meter https://teletekst-data.nos.nl/json/$1)
 
-begin;
+{
 echo '<pre>';
-echo $j | jq -r .content \
+echo "$j" | jq -r .content \
  | sed \
  -e 's:<span class="\([^"]*\)">:\1:g' \
  -e 's:</\?span>:\x1b[m\x1b[97;40m:g' \
@@ -87,7 +87,7 @@ echo $j | jq -r .content \
  -e 's/^/\x1b[97;40m/g' \
  -e 's/$/ \x1b[m<br>/g';
 echo '</pre>';
-end \
+} \
 | tr -d '\n' \
 | html2text --unicode-snob \
 | sed -z \
@@ -97,10 +97,10 @@ end \
  -e 's/^\n//g' \
  -e 's/\n$//g';
 
-printf '   %s    ' (echo $j | jq -r '.fastTextLinks[].page')
+echo $j | jq -r '.fastTextLinks[].page' | while read l; do printf '   %s    ' "$l"; done;
 echo -e '\n';
 
 printf '%6s    ' '<<' '<  ' '>  ' '>> '
 echo;
-printf '%6s    ' (echo $j | jq -r '.prevPage, .prevSubPage, .nextSubPage, .nextPage')
+echo $j | jq -r '.prevPage, .prevSubPage, .nextSubPage, .nextPage' | while read l; do printf '%6s    ' "$l"; done;
 echo;
