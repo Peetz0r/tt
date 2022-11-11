@@ -1,0 +1,106 @@
+#!/bin/fish
+
+set j (curl -f --no-progress-meter https://teletekst-data.nos.nl/json/$argv)
+
+begin;
+echo '<pre>';
+echo $j | jq -r .content \
+ | sed \
+ -e 's:<span class="\([^"]*\)">:\1:g' \
+ -e 's:</\?span>:\x1b[m\x1b[97;40m:g' \
+ -e 's:<[^s][^>]*>::g' \
+ -e 's:doubleHeight ::g' \
+ -e 's/bg-black /\x1b[100m/g' \
+ -e 's/bg-red /\x1b[101m/g' \
+ -e 's/bg-green /\x1b[102m/g' \
+ -e 's/bg-yellow /\x1b[103m/g' \
+ -e 's/bg-blue /\x1b[104m/g' \
+ -e 's/bg-magenta /\x1b[105m/g' \
+ -e 's/bg-cyan /\x1b[106m/g' \
+ -e 's/bg-white /\x1b[107m/g' \
+ -e 's/black /\x1b[90m/g' \
+ -e 's/red /\x1b[91m/g' \
+ -e 's/green /\x1b[92m/g' \
+ -e 's/yellow /\x1b[93m/g' \
+ -e 's/blue /\x1b[94m/g' \
+ -e 's/magenta /\x1b[95m/g' \
+ -e 's/cyan /\x1b[96m/g' \
+ -e 's/white /\x1b[97m/g' \
+ -e 's/&#xF020;/ /g' \
+ -e 's/&#xF021;/🬀/g' \
+ -e 's/&#xF022;/🬁/g' \
+ -e 's/&#xF023;/🬂/g' \
+ -e 's/&#xF024;/🬃/g' \
+ -e 's/&#xF025;/🬄/g' \
+ -e 's/&#xF026;/🬅/g' \
+ -e 's/&#xF027;/🬆/g' \
+ -e 's/&#xF028;/🬇/g' \
+ -e 's/&#xF029;/🬈/g' \
+ -e 's/&#xF02a;/🬉/g' \
+ -e 's/&#xF02b;/🬊/g' \
+ -e 's/&#xF02c;/🬋/g' \
+ -e 's/&#xF02d;/🬌/g' \
+ -e 's/&#xF02e;/🬍/g' \
+ -e 's/&#xF02f;/🬎/g' \
+ -e 's/&#xF030;/🬏/g' \
+ -e 's/&#xF031;/🬐/g' \
+ -e 's/&#xF034;/🬓/g' \
+ -e 's/&#xF035;/▌/g' \
+ -e 's/&#xF036;/🬔/g' \
+ -e 's/&#xF037;/🬕/g' \
+ -e 's/&#xF038;/🬖/g' \
+ -e 's/&#xF03a;/🬘/g' \
+ -e 's/&#xF03b;/🬙/g' \
+ -e 's/&#xF03c;/🬚/g' \
+ -e 's/&#xF03d;/🬛/g' \
+ -e 's/&#xF03e;/🬜/g' \
+ -e 's/&#xF03f;/🬝/g' \
+ -e 's/&#xF060;/🬞/g' \
+ -e 's/&#xF062;/🬠/g' \
+ -e 's/&#xF063;/🬡/g' \
+ -e 's/&#xF065;/🬘/g' \
+ -e 's/&#xF066;/🬤/g' \
+ -e 's/&#xF067;/🬥/g' \
+ -e 's/&#xF068;/🬦/g' \
+ -e 's/&#xF06a;/▐/g' \
+ -e 's/&#xF06b;/🬨/g' \
+ -e 's/&#xF06c;/🬩/g' \
+ -e 's/&#xF06d;/🬪/g' \
+ -e 's/&#xF06e;/🬫/g' \
+ -e 's/&#xF06f;/🬬/g' \
+ -e 's/&#xF070;/🬭/g' \
+ -e 's/&#xF071;/🬮/g' \
+ -e 's/&#xF072;/🬯/g' \
+ -e 's/&#xF073;/🬰/g' \
+ -e 's/&#xF074;/🬱/g' \
+ -e 's/&#xF075;/🬲/g' \
+ -e 's/&#xF076;/🬳/g' \
+ -e 's/&#xF077;/🬴/g' \
+ -e 's/&#xF078;/🬵/g' \
+ -e 's/&#xF079;/🬶/g' \
+ -e 's/&#xF07a;/🬷/g' \
+ -e 's/&#xF07c;/🬹/g' \
+ -e 's/&#xF07d;/🬺/g' \
+ -e 's/&#xF07e;/🬻/g' \
+ -e 's/&#xF07f;/█/g' \
+ -e '/^$/d' \
+ -e 's/^/\x1b[97;40m/g' \
+ -e 's/$/ \x1b[m<br>/g';
+echo '</pre>';
+end \
+| tr -d '\n' \
+| html2text --unicode-snob \
+| sed -z \
+ -e 's/&verkeer;/\&verkeer/g' \
+ -e 's/ *\n */\n/g' \
+ -e 's/\n\n/\n/g' \
+ -e 's/^\n//g' \
+ -e 's/\n$//g';
+
+printf '   %s    ' (echo $j | jq -r '.fastTextLinks[].page')
+echo -e '\n';
+
+printf '%6s    ' '<<' '<  ' '>  ' '>> '
+echo;
+printf '%6s    ' (echo $j | jq -r '.prevPage, .prevSubPage, .nextSubPage, .nextPage')
+echo;
