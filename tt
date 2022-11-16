@@ -1,6 +1,9 @@
 #!/bin/bash
 
-j=$(curl -f --no-progress-meter https://teletekst-data.nos.nl/json/$1)
+
+if ! j=$(curl -f --no-progress-meter https://teletekst-data.nos.nl/json/$1); then
+  exit 1;
+fi
 
 {
 echo '<pre>';
