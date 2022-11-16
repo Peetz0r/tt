@@ -29,3 +29,9 @@ Most (all?) of these still render the text and colors fine. Some of the graphic 
 
 - xterm
 - Linux VTY (I tried 6.1.0-rc4 even!)
+
+## Screenshots
+(these are in two different color schemes of my terminal emulator)
+
+![demo 1](demo1.png)
+![demo 2](demo2.png)
