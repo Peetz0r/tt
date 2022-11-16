@@ -88,7 +88,7 @@ echo "$j" | jq -r .content \
  -e 's/&#xF07e;/🬻/g' \
  -e 's/&#xF07f;/█/g' \
  -e '/^$/d' \
- -e 's/^\x1b\[..m//g' \
+ -e 's/^\(\x1b\[..m\) / \1/g' \
  -e 's/^\x1b\[m\x1b\[97;40m//g' \
  -e 's/^ /\x1b[97;40m/g' \
  -e 's/$/\x1b[m<br>/g';
