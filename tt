@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 j=$(curl -f --no-progress-meter https://teletekst-data.nos.nl/json/$1)
 
