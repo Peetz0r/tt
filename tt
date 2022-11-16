@@ -1,7 +1,8 @@
 #!/bin/bash
 
-
-if ! j=$(curl -f -sS https://teletekst-data.nos.nl/json/$1); then
+url="https://teletekst-data.nos.nl/json/$1"
+if ! j=$(curl -f -sS "$url"); then
+  echo "The URL was: $url";
   exit 1;
 fi
 
