@@ -10,8 +10,8 @@ Don't expect this to work in plain old `xterm`. I *would* expect this to work on
 
 ## Requirements
 
-- cURL 7.67.0 (november 2019)
-  - You could user older cURL if you change `--no-progress-meter` to `-s` but you won't get errors if you request a non-existing page.
+- cURL
+  - I have no clue what version supports `-sS` because the manpage is silent on this.
 - jq (any version I guess)
 - html2text 2015.6.21
 - bash, sed, tr (probably any version of those)
